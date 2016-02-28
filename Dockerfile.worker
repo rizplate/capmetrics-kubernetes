@@ -1,0 +1,20 @@
+FROM ubuntu:14.04.4
+
+RUN apt-get update && \
+    apt-get install -y git python-pip python-dev build-essential
+
+RUN mkdir /worker
+
+COPY ./requirements.txt /worker/requirements.txt
+
+WORKDIR /worker
+
+RUN pip install --upgrade pip virtualenv && \
+    pip install -r /worker/requirements.txt
+
+COPY . /worker/
+
+RUN mkdir /root/.aws/
+COPY ./aws_creds /root/.aws/credentials
+
+CMD ["rqworker", "-u", "redis://redis:6379/"]

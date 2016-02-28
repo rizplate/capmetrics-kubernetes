@@ -1,0 +1,24 @@
+{
+  "kind": "Service",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "dashboard",
+    "labels": {
+      "name": "dashboard"
+    }
+  },
+  "spec": {
+    "type": "NodePort",
+    "ports": [
+      {
+        "port": 9181,
+        "targetPort": 9181,
+        "nodePort": 32657,
+        "protocol": "TCP"
+      }
+    ],
+    "selector": {
+      "name": "dashboard"
+    }
+  }
+}

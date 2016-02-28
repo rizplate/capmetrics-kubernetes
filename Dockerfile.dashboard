@@ -1,0 +1,9 @@
+FROM ubuntu:14.04.4
+
+RUN apt-get update && \
+    apt-get install -y python-pip python-dev
+
+RUN pip install rq-dashboard==0.3.4
+
+EXPOSE 9181
+CMD ["rq-dashboard", "--port", "9181", "-H", "redis", "-P", "6379"]

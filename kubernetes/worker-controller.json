@@ -1,0 +1,42 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "worker",
+    "labels": {
+      "name": "worker"
+    }
+  },
+  "spec": {
+    "replicas": 3,
+    "selector": {
+      "name": "worker"
+    },
+    "template": {
+      "metadata": {
+        "labels": {
+          "name": "worker"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "worker",
+            "image": "<WORKER-IMAGE>",
+            "resources": {
+              "requests": {
+                "cpu": "850m",
+                "memory": "200m"
+              }
+            }
+          }
+        ],
+        "imagePullSecrets": [
+          {
+            "name": "privateregistrykey"
+          }
+        ]
+      }
+    }
+  }
+}

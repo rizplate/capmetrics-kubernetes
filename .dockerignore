@@ -1,0 +1,6 @@
+data/vehicle_positions/*
+data/gtfs/*
+data/ridership/*
+.git
+.env
+*.pyc

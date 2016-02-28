@@ -1,0 +1,42 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "dashboard",
+    "labels": {
+      "name": "dashboard"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "name": "dashboard"
+    },
+    "template": {
+      "metadata": {
+        "labels": {
+          "name": "dashboard"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "dashboard",
+            "image": "<DASHBOARD-IMAGE>",
+            "ports": [
+              {
+                "containerPort": 9181,
+                "protocol": "TCP"
+              }
+            ]
+          }
+        ],
+        "imagePullSecrets": [
+          {
+            "name": "privateregistrykey"
+          }
+        ]
+      }
+    }
+  }
+}
