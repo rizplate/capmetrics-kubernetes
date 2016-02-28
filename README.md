@@ -1,4 +1,7 @@
 # capmetrics-kubernetes
+
+[![License](https://img.shields.io/dub/l/vibe-d.svg)](http://doge.mit-license.org)
+
 Quick and dirty distributed data processing for CapMetrics on [Kubernetes](https://blog.redspread.com/2015/12/31/basic-kubernetes-vocabulary/).
 
 ## High-Level Overview
