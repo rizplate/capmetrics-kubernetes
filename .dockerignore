@@ -1,6 +1,7 @@
 data/vehicle_positions/*
 data/gtfs/*
 data/ridership/*
+data/processed/*
 .git
 .env
 *.pyc

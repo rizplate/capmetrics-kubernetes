@@ -9,7 +9,7 @@ COPY ./requirements.txt /worker/requirements.txt
 
 WORKDIR /worker
 
-RUN pip install --upgrade pip virtualenv && \
+RUN pip install --upgrade pip && \
     pip install -r /worker/requirements.txt
 
 COPY . /worker/
