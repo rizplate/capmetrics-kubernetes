@@ -13,6 +13,9 @@ import pandas as pd
 from utils import get_metadata, date_range
 
 
+INT_COLS = ['vehicle_id', 'route_id', 'trip_id', 'stop_id', 'dayofweek', 'hourofday']
+
+
 def get_trip_stops(trip_id, stops, schedule):
     trip_schedule = schedule.loc[schedule.trip_id == trip_id]
     return stops.loc[stops.stop_id.isin(trip_schedule.stop_id)]
@@ -111,30 +114,30 @@ def get_sched_dev(pos):
 
 def select_pos_from_group(group):
     '''
-    Let group be a group of positions where a vehicle has multiple positions
-    recorded for a single stop. This most likely means that the bus was
-    sitting there for a while. It may have first arrived on/behind or ahead of
-    schedule. (For our purposes, treat on or behind schedule as the same
-    scenario.)
+        Let group be a group of positions where a vehicle has multiple positions
+        recorded for a single stop. This most likely means that the bus was
+        sitting there for a while. It may have first arrived on/behind or ahead of
+        schedule. (For our purposes, treat on or behind schedule as the same
+        scenario.)
 
-    For the purposes of measuring reliability, we really just want to know:
+        For the purposes of measuring reliability, we really just want to know:
 
-        A) Did it first arrive ahead of schedule (causing people to miss the
-           bus even if they get to the stop on time)?
+            A) Did it first arrive ahead of schedule (causing people to miss the
+               bus even if they get to the stop on time)?
 
-        OR
+            OR
 
-        B) Did the bus first arrive on or behind schedule, and if so, how late?
+            B) Did the bus first arrive on or behind schedule, and if so, how late?
 
-    In scenario A, all the positions have sched_dev < 0,
-    which means the bus arrived at the stop early. We want to know how early
-    the bus was when it left the stop, so we return the position with the
-    largest sched_dev.
+        In scenario A, all the positions have sched_dev < 0,
+        which means the bus arrived at the stop early. We want to know how early
+        the bus was when it left the stop, so we return the position with the
+        largest sched_dev.
 
-    In scenario B, at least one position has a sched_dev > 0, which means that
-    the bus arrived at the stop past late. We want to know how late the bus was
-    when it first arrived at the stop, so we return the position with the
-    smallest sched_dev.
+        In scenario B, at least one position has a sched_dev > 0, which means that
+        the bus arrived at the stop past late. We want to know how late the bus was
+        when it first arrived at the stop, so we return the position with the
+        smallest sched_dev.
     '''
 
     if len(group) == 1:
@@ -188,7 +191,10 @@ def process_day(positions, stops, schedule):
     grouped = positions.groupby(['trip_id', 'stop_id'])
     selected_positions = grouped.apply(select_pos_from_group)
 
-    return selected_positions
+    cleaned = selected_positions.dropna()
+    cleaned[INT_COLS] = cleaned[INT_COLS].astype(int)
+
+    return cleaned
 
 
 def process_single_day(day, data_dir):
